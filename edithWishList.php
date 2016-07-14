@@ -10,10 +10,6 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <form name="wishList" action="wishlist.php">
-            Show wish list of: <input type="text" name="user" value="" />
-            <input type="submit" value="go" />
-        </form>       
-        <br> Syill di't have a wish list? <a href="createNewWisher.php">Create now</a>
+       Hello!
     </body>
 </html>
