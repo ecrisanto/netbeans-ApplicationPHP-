@@ -51,7 +51,7 @@ and open the template in the editor.
                 $result = mysqli_query($con, "SELECT description, due_date FROM wishes WHERE wisher_id=" . $wisherID);
                 while ($row = mysqli_fetch_array($result)){
                     echo "<tr><td>".  htmlentities($row["description"])."</td>";
-                    echo "<td>".  htmlentities($row["due_Date"])."</td></tr>\n";
+                    echo "<td>".  htmlentities($row["due_date"])."</td></tr>\n";
                 }
                 
                 mysqli_free_result($result);
