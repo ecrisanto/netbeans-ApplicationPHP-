@@ -20,24 +20,52 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         <title>Wishlist Application</title>
     </head>
     <body>
-        <form action="wishlist.php" method="GET" name="wishList">
-            Show wish list of: <input type="text" name="user"/>
+        <input type="submit" value="Show Wish list of >>" name="showWishList" onclick="javascript:showHideWishListForm()" />    
+        <form action="wishlist.php" method="GET" name="wishList" style="visibility: hidden">
+            <input type="text" name="user"/>
             <input type="submit" value="Go" />
         </form>
         Still don't have a wish list?!<a href="createNewWisher.php">Create now</a>
         
-    </body>
-    <form name="logon" action="index.php" method="POST">
-        Username: <input type="text" name="user" value="" />
-        Password: <input type="password" name="userpassword" value="" />
-        <?php
-        if($_SERVER["REQUEST_METHOD"]== "POST"){
-            if(!$logonSuccess)
-                echo "Invalid name and/or password";
-        }
-        ?>
-        <input type="submit" value="Edit My Wish List" />
-    </form>
-
-    
+        <form name="logon" action="index.php" method="POST" style="visibility: 
+            <?php 
+                if($logonSuccess) 
+                    echo "hidden"; 
+                else 
+                    echo "visible";
+            ?>">
+            Username: <input type="text" name="user" value="" />
+            Password: <input type="password" name="userpassword" value="" />
+            <?php
+            if($_SERVER["REQUEST_METHOD"]== "POST"){
+                if(!$logonSuccess)
+                    echo "Invalid name and/or password";                
+            }
+            ?>
+            <input type="submit" value="Edit My Wish List" />
+        </form>
+        <script>
+                function showHideLogonForm(){
+                    if(document.all.logon.style.visibility == "visible"){
+                        document.all.logon.style.visibility == "hidden";
+                        document.all.myWishList.value = "My Wishlist>>";
+                    }else{
+                        document.all.logon.style.visibility = "visible";
+                        document.all.myWishList.value = "<<My Wishlist";
+                    }
+                        
+                }
+                
+                function showHideShowWishListForm(){
+                    if(document.all.wishList.style.visibility == "visible"){
+                        document.all.wishList.style.visibility == "hidden";
+                        document.all.showWishList.value = "Show Wishlist of>>";
+                    }else{
+                        document.all.wishList.style.visibility = "visible";
+                        document.all.showWishList.value = "<<Show Wish list of";
+                    }
+                        
+                }
+        </script>
+    </body>    
 </html>
