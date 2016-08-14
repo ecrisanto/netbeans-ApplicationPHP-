@@ -16,9 +16,14 @@ require_once("Includes/db.php");
             exit;
         }else if($_POST["wish"] == ""){
             $wishDescriptionIdEmpty = true;
-        }else
+        }else if($_POST["wishID"] == "")
         {            
             WishDB::getInstance()->insert_wish($wisherID, $_POST["wish"],$_POST["due_date"]);           
+            header("Location: editWishList.php");
+            exit;
+        }else if($_POST["wishID"] != "")
+        {            
+            WishDB::getInstance()->update_wish($_POST["wishID"],$_POST["wish"], $_POST["due_date"]);           
             header("Location: editWishList.php");
             exit;
         }
@@ -38,12 +43,15 @@ and open the template in the editor.
     <body>
         <?php
             if ($_SERVER["REQUEST_METHOD"] == "POST")
-                $wish = array("description" => $_POST["wish"],
+                $wish = array("id"=>$_POST["wishID"], "description" => $_POST["wish"],
                     "due_date"=>$_POST["due_date"]);
-            else
+            else if(array_key_exists("wishID", $_GET)){
+                $wish = mysqli_fetch_array(WishDB::getInstance()->get_wish_by_id($_GET["wishID"]));
+            }else                
                 $wish = array("description"=> "", "due_date"=>"");
         ?>
         <form name="editWish" action="editWish.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="wishID" value="<?php echo $wish["id"]; ?>" />
             Describe your wish: <input type="text" name="wish" value="<?php echo $wish["description"] ?>" /> <br>
             <?php if($wishDescriptionIdEmpty) echo "Please enter description <br>"; ?>
             When do you want to get it? <input type="text" name="due_date" value="<?php $wish["due_date"] ?>" /> <br>

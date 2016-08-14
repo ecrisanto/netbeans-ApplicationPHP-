@@ -55,6 +55,10 @@ class WishDB extends mysqli {
     public function get_wishes_by_wisher_id($wisherID) {
         return $this->query("SELECT id, description, due_date FROM wishes WHERE wisher_id=" . $wisherID);
     }
+    
+    public function get_wish_by_id($wishId){
+        return $this->query("SELECT id, description, due_date FROM wishes WHERE id = $wishId");
+    }
 
     public function create_wisher($name, $password) {
         $name = $this->real_escape_string($name);
@@ -84,6 +88,19 @@ class WishDB extends mysqli {
 
     }
     
+    public function update_wish($wishID, $description, $duedate){
+        $description = $this->real_escape_string($description);
+                
+        if($duedate == ""){
+            $this->query("UPDATE wishes SET description = '".$description."', due_Date = NULL WHERE id= ".$wishID);
+        }else
+            $this->query("UPDATE wishes SET description = '".$description."', due_date =".$this->format_date_for_mysql($duedate)." WHERE id= ".$wishID);
+    }
+    
+    function delete_wish($wishID){
+        $this->query("DELETE FROM wishes WHERE id =".$wishID);        
+    }
+            
     function format_date_for_mysql($date){
         if($date == "")
             return null;
