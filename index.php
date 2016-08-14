@@ -1,19 +1,43 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<?php
+require_once("Includes/db.php");
+$logonSuccess = false;
+
+//verificamos los datos del usuario
+if($_SERVER['REQUEST_METHOD'] == "POST"){
+    $logonSuccess = (WishDB::getInstance()->verify_wisher_credentials($_POST['user'],$_POST['userpassword']));
+    if($logonSuccess == true){
+        session_start();
+        $_SESSION['user'] = $_POST['user'];
+        header('Location:editWishList.php');
+        exit;
+    }
+}
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Wishlist Application</title>
     </head>
     <body>
-        <form name="wishList" action="wishlist.php">
-            Show wish list of: <input type="text" name="user" value="" />
-            <input type="submit" value="go" />
-        </form>       
-        <br> Syill di't have a wish list? <a href="createNewWisher.php">Create now</a>
+        <form action="wishlist.php" method="GET" name="wishList">
+            Show wish list of: <input type="text" name="user"/>
+            <input type="submit" value="Go" />
+        </form>
+        Still don't have a wish list?!<a href="createNewWisher.php">Create now</a>
+        
     </body>
+    <form name="logon" action="index.php" method="POST">
+        Username: <input type="text" name="user" value="" />
+        Password: <input type="password" name="userpassword" value="" />
+        <?php
+        if($_SERVER["REQUEST_METHOD"]== "POST"){
+            if(!$logonSuccess)
+                echo "Invalid name and/or password";
+        }
+        ?>
+        <input type="submit" value="Edit My Wish List" />
+    </form>
+
+    
 </html>
